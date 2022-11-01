@@ -26,11 +26,11 @@ from telegram.ext import (
     filters
 )
 
-from initdatabase import initdb
-import db_handler
-
 # using separate configuration and parser
 from configparser import ConfigParser
+# import initdb and handler to it
+import initdatabase
+import db_handler
 
 # configparser
 cfg = ConfigParser()
@@ -48,10 +48,8 @@ logger = logging.getLogger(__name__)
 # declaring constants
 STOREDATA = range(1)
 
-# init database
-initdb()
-logger.info("Database initialized")
-
+# calling method initdb creates
+initdatabase.initdb()
 
 # when /start is issued
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -100,7 +98,8 @@ async def store_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     user = update.message.from_user
     new_data = update.message.text
 
-    # Store data to database
+    # we are calling add_data method from database handler
+    # # it takes the new_data as parameter
     db_handler.add_data(new_data)
 
     # Logging new_data and username
