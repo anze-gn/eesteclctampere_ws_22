@@ -74,7 +74,7 @@ Base project for Great Northern Health Tracking Trek. EESTEC LC Tampere workshop
     - https://ptb-test.readthedocs.io/en/latest/telegram.ext.messagehandler.html
 - In the original repository there's separate branches with more code included if you get stuck or just want to check something for reference
 
-![Branches](branches1.png)
+![Branches](images/branches1.png)
 
 - You may also fork the repository again 
 - or just copy some of the contents
