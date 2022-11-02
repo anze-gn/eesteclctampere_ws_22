@@ -29,8 +29,9 @@ from telegram.ext import (
 # using separate configuration and parser
 from configparser import ConfigParser
 # import initdb and handler to it
-import initdatabase
-import db_handler
+import initdatabase, db_handler
+import ecg4everybody_api
+import re
 
 # configparser
 cfg = ConfigParser()
@@ -86,7 +87,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def newdata(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Asks new data point value from user."""
     await update.message.reply_text(
-        "Waiting for new value: "
+        "Paste crowdsourcing URL: "
     )
     return STOREDATA
 
@@ -96,21 +97,42 @@ async def store_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     """Gets new data value from user."""
 
     user = update.message.from_user
-    new_data = update.message.text
+    url = update.message.text
+
+    try:
+        id = re.search('i=(\w+)', url).group(1)
+    except AttributeError:
+        logger.info(
+            "URL %s from user %s not recognized", url, user.first_name
+        )
+        await update.message.reply_text(
+            "URL not recognized, please try again: "
+        )
+        return STOREDATA
+
+    # get data from ecg4everybody crowdsourcing web server
+    data = ecg4everybody_api.get(id)
 
     # we are calling add_data method from database handler
     # # it takes the new_data as parameter
-    db_handler.add_data(new_data)
+    db_handler.add_data(
+        user.id,
+        data['recorded_utc'],
+        data['hr'],
+        data['rmssd']
+    )
 
     # Logging new_data and username
     logger.info(
-        "Stored new value %s from user %s", new_data, user.first_name
+        "Stored new values %s, %d, %d, from user %s", data['recorded_utc'], data['hr'], data['rmssd'], user.first_name
     )
 
     await update.message.reply_text(
-        "Stored new value: "
+        f"Stored new values:\n"
+        f"recorded_utc: {data['recorded_utc']}\n"
+        f"hr: {data['hr']}\n"
+        f"rmssd: {data['rmssd']}"
     )
-    await update.message.reply_text(update.message.text)
 
     return ConversationHandler.END
 

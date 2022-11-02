@@ -2,7 +2,7 @@ import sqlite3
 
 # method initdb creates eestec-database and creates one table with two columns
 # https://www.sqlitetutorial.net/sqlite-python/sqlite-python-select/
-def initdb(db='eestec.db'):
+def initdb(db='GNHTTbot.db'):
 
     # creating table
     # using connect, sqlite will try to open the file
@@ -13,8 +13,10 @@ def initdb(db='eestec.db'):
 
     # executing command CREATE TABLE to create table with two columns
     c.execute('CREATE TABLE IF NOT EXISTS data_table('
-        'date text,'
-        'data integer)')
+        'user_id integer,'
+        'recorded_utc text,'
+        'hr integer,'
+        'rmssd integer)')
 
     # commit saves changes to the database
     conn.commit()

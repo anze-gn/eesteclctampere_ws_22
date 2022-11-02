@@ -10,7 +10,7 @@ from contextlib import contextmanager
 def cursor():
     try:
         # using connect, sqlite will try to open the file
-        conn = sq.connect('eestec.db')
+        conn = sq.connect('GNHTTbot.db')
         # cursor allows you to execute sql code
         cur = conn.cursor()
         yield cur
@@ -21,12 +21,10 @@ def cursor():
         conn.close()
 
 # method for saving data_value
-def add_data(data):
+def add_data(user_id, recorded_utc, hr, rmssd):
     with cursor() as cur:
-        # save current time to date
-        date = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         # executing command INSERT INTO for saving new data
-        cur.execute('INSERT INTO data_table values(?, ?)', (date, data))
+        cur.execute('INSERT INTO data_table values(?, ?, ?, ?)', (user_id, recorded_utc, hr, rmssd))
 
 # gets selected data from table data_table and returns it 
 # TODO: expand on this to select data from different tables in the future
