@@ -57,24 +57,33 @@ initdatabase.initdb()
 # when /start is issued
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Displays starting message and lists commands."""
-    await update.message.reply_text(
-        "Welcome. Use the commands below to test available features.\n"
-        "/help lists these commands.\n"
-        "/new let's you input new data value.\n"
-        "/plot function initiates plotting of chosen data.\n"
-        "/cancel cancels current action.\n"
-        # TODO: add the commands you need.
+    await update.message.reply_markdown_v2(
+        "Welcome to the Great Northern Health Tracking bot 🤖👋\n"
+        "\n"
+        "*List of commands:*\n"
+        "/help lists these commands\n"
+        "/new let's you input new data value from the [HRV Camera app](https://ecg4everybody.com/)\n"
+        "/plot function initiates plotting of chosen data\n"
+        "/cancel cancels current action\n"
+        "\n"
+        "*Terms & Conditions:*\n"
+        "||_By using this bot you agree to health data collection and processing\.\n"
+        "You also agree to donate a kidney and your firstborn child to EESTEC, when/if the need arises\. "
+        "In such case, you shall be notified by a carrier pigeon and you have to respond in 5 business days\. "
+        "By failing to do so, you allow EESTEC to use any means necessary to collect your donation\.\n_||",
+        disable_web_page_preview=True
     )
 
 
 # when /help is issued
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Displays info on how to use the bot."""
-    await update.message.reply_text(
-        "/new let's you input new data value.\n"
-        "/plot function initiates plotting of chosen data.\n"
-        "/cancel cancels current action.\n"
-        # TODO: add commands you need here too
+    await update.message.reply_markdown_v2(
+        "*List of commands:*\n"
+        "/help lists these commands\n"
+        "/new let's you input new data value from the [HRV Camera app](https://ecg4everybody.com/)\n"
+        "/plot function initiates plotting of chosen data\n"
+        "/cancel cancels current action\n"
     )
 
 
