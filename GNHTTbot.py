@@ -176,11 +176,17 @@ async def plot_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "Plotting data: %s from user: %s", chosen_data, user.first_name
     )
     await update.message.reply_text(
-        "Plotting.. : ", reply_markup=ReplyKeyboardRemove()
+        "Plotting...", reply_markup=ReplyKeyboardRemove()
     )
     data = db_handler.get_user_data(update.message.from_user.id)
-    plot = data_plotter.plot(data, chosen_data)
-    await update.message.reply_photo(photo=plot)
+    if len(next(iter(data.values()))) < 2:
+        await update.message.reply_text(
+            "Less than two measurements saved, cannot plot\n"
+            "Please add measurements using /new\n"
+        )
+    else:
+        plot = data_plotter.plot(data, chosen_data)
+        await update.message.reply_photo(photo=plot)
 
     return ConversationHandler.END
 
