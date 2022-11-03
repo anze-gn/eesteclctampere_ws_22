@@ -166,7 +166,9 @@ async def plot_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     logger.info(
         "Plotting data: %s from user: %s", chosen_data, user.first_name
     )
-
+    await update.message.reply_text(
+        "Plotting.. : ", reply_markup=ReplyKeyboardRemove()
+    )
     data = db_handler.get_user_data(update.message.from_user.id)
     plot = data_plotter.plot(data, chosen_data)
     await update.message.reply_photo(photo=plot)
