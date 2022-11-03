@@ -1,6 +1,6 @@
 import sqlite3 as sq
 # using datatime to get the exact timestamp
-import datetime as dt 
+import datetime as dt
 
 from contextlib import contextmanager
 
@@ -33,3 +33,18 @@ def getdatapoint():
         cur.execute('SELECT date, data from data_table')
         rows = cur.fetchall()
     return rows
+
+def get_user_data(user_id):
+    data = {
+        "recorded_utc": [],
+        "hr": [],
+        "rmssd": []
+    }
+    with cursor() as cur:
+        cur.execute('SELECT recorded_utc, hr, rmssd FROM data_table WHERE user_id = ?', [user_id])
+        rows = cur.fetchall()
+        for row in rows:
+            data["recorded_utc"].append(dt.datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S'))
+            data["hr"].append(row[1])
+            data["rmssd"].append(row[2])
+    return data

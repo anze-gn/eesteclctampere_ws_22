@@ -32,6 +32,7 @@ from configparser import ConfigParser
 import initdatabase, db_handler
 import ecg4everybody_api
 import re
+import data_plotter
 
 # configparser
 cfg = ConfigParser()
@@ -47,7 +48,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # declaring constants
-STOREDATA = range(1)
+STOREDATA, PLOTDATA = range(2)
 
 # calling method initdb creates
 initdatabase.initdb()
@@ -59,6 +60,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "Welcome. Use the commands below to test available features.\n"
         "/help lists these commands.\n"
         "/new let's you input new data value.\n"
+        "/plot function initiates plotting of chosen data.\n"
+        "/cancel cancels current action.\n"
         # TODO: add the commands you need.
     )
 
@@ -68,6 +71,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     """Displays info on how to use the bot."""
     await update.message.reply_text(
         "/new let's you input new data value.\n"
+        "/plot function initiates plotting of chosen data.\n"
+        "/cancel cancels current action.\n"
         # TODO: add commands you need here too
     )
 
@@ -94,7 +99,7 @@ async def newdata(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 # called when STOREDATA state is reached
 async def store_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Gets new data value from user."""
+    """Stores the aquired data by calling add_data method from db_handler."""
 
     user = update.message.from_user
     url = update.message.text
@@ -137,6 +142,31 @@ async def store_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     return ConversationHandler.END
 
 
+# called when /plot command is given
+async def plotter(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Asks user what data they want to plot."""
+    await update.message.reply_text(
+        "What data do you want to plot?\n"
+        "Options: hr, rmssd"
+    )
+    return PLOTDATA
+
+
+# called when PLOTDATA state is reached in plotter_handler conversation
+async def plot_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Gets new data value from user."""
+    user = update.message.from_user
+    chosen_data = update.message.text
+    logger.info(
+        "Plotting data: %s from user: %s", chosen_data, user.first_name
+    )
+
+    data = db_handler.get_user_data(update.message.from_user.id)
+    plot = data_plotter.plot(data, chosen_data)
+    await update.message.reply_photo(photo=plot)
+
+    return ConversationHandler.END
+
 def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
@@ -155,9 +185,18 @@ def main() -> None:
         fallbacks=[CommandHandler("cancel", cancel)],
     )
 
+    plotter_handler = ConversationHandler(
+        entry_points=[CommandHandler("plot", plotter)],
+        states={
+            PLOTDATA: [MessageHandler(filters.TEXT & ~filters.COMMAND, plot_data)],
+        },
+        fallbacks=[CommandHandler("cancel", cancel)],
+    )
+
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("start", start))
     application.add_handler(storedata_handler)
+    application.add_handler(plotter_handler)
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
