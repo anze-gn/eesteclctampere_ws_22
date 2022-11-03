@@ -53,6 +53,7 @@ STOREDATA, PLOTDATA = range(2)
 # calling method initdb creates
 initdatabase.initdb()
 
+
 # when /start is issued
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Displays starting message and lists commands."""
@@ -145,9 +146,14 @@ async def store_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 # called when /plot command is given
 async def plotter(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Asks user what data they want to plot."""
+    reply_keyboard = [["HR", "RMSSD"]]
+
     await update.message.reply_text(
         "What data do you want to plot?\n"
-        "Options: hr, rmssd"
+        "Options: HR, RMSSD",
+        reply_markup=ReplyKeyboardMarkup(
+            reply_keyboard, one_time_keyboard=True, input_field_placeholder="Data to plot:"
+        ),
     )
     return PLOTDATA
 
@@ -156,7 +162,7 @@ async def plotter(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def plot_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Gets new data value from user."""
     user = update.message.from_user
-    chosen_data = update.message.text
+    chosen_data = update.message.text.lower()
     logger.info(
         "Plotting data: %s from user: %s", chosen_data, user.first_name
     )
