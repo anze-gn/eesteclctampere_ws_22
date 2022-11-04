@@ -34,6 +34,7 @@ import initdatabase, db_handler
 import ecg4everybody_api
 import re
 import data_plotter
+import itertools
 
 # configparser
 cfg = ConfigParser()
@@ -212,7 +213,7 @@ async def curse(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text(curse)
     return ConversationHandler.END
 
-party_songs = iter([
+party_songs = itertools.cycle([
     "https://youtu.be/CdlpJhHCFlc",  # noot noot
     "https://youtu.be/cNgyuHtBBW8",  # hentai
     "https://youtu.be/0a5BJxrarL0",  # USA
@@ -233,7 +234,7 @@ async def party(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return ConversationHandler.END
 
 
-dance_songs = iter([
+dance_songs = itertools.cycle([
     "https://youtu.be/upgFEQmIp08",  # hir aj kam
     "https://youtu.be/mDFBTdToRmw",  # skibidi
     "https://youtu.be/Vt_WLYubVlk",  # gaber
