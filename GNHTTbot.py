@@ -1,6 +1,7 @@
 # https://t.me/GNHTTbot
 
 import logging
+import random
 
 from telegram import __version__ as TG_VER
 
@@ -190,6 +191,120 @@ async def plot_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     return ConversationHandler.END
 
+
+async def curse(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    curses = {
+        "SI": "Pes te nima rad",
+        "TR": "Yarrak kafa",
+        "PL": "Matkojebca",
+        "HR": "Jebem ti pasa jarca",
+        "RU": "Mudak",
+        "PT": "Caralho",
+        "FI": "Kikkeli",
+        "RS": "Pička mater",
+        "GR": "Moonopano",
+    }
+    args = context.args
+    if len(args) < 1:
+        curse = random.choice(list(curses.values()))
+    else:
+        curse = curses[args[0]]
+    await update.message.reply_text(curse)
+    return ConversationHandler.END
+
+party_songs = iter([
+    "https://youtu.be/CdlpJhHCFlc",  # noot noot
+    "https://youtu.be/cNgyuHtBBW8",  # hentai
+    "https://youtu.be/0a5BJxrarL0",  # USA
+    "https://youtu.be/fysw1kQKw_w",  # ximeromata
+    "https://youtu.be/bPOobWvCm_4",  # zašto baš ti satisfaction
+    "https://youtu.be/cpp69ghR1IM",  # simarik
+    "https://youtu.be/LCcIx6bCcr8",  # ona by tak chciala
+    "https://youtu.be/ADuAzItBzto",  # german sex tourist
+    "https://youtu.be/bEacVcAtiKU",  # belly dancer
+    "https://youtu.be/j70MeSY8tTg",  # smack that
+    "https://youtu.be/PO_d169ibZ8",  # the business
+    "https://youtu.be/Y0ORYHQ-VMA",  # johnny deere
+])
+async def party(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    # song = random.choice(songs)
+    song = next(party_songs)
+    await update.message.reply_text(song)
+    return ConversationHandler.END
+
+
+dance_songs = iter([
+    "https://youtu.be/upgFEQmIp08",  # hir aj kam
+    "https://youtu.be/mDFBTdToRmw",  # skibidi
+    "https://youtu.be/Vt_WLYubVlk",  # gaber
+    "https://youtu.be/cHcVU5cGUNE",  # stamp on the ground
+    "https://youtu.be/jqTSAtU-HRA",  # helikopter 117
+    "https://youtu.be/ArwFal9zjZE",  # ti
+    "https://youtu.be/5fe57bDZCJE",  # belgijka
+    "https://youtu.be/t3b9qjYW1z0",  # crno na belo
+    "https://youtu.be/XqZsoesa55w",  # baby shark
+])
+async def dance(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    # song = random.choice(songs)
+    song = next(dance_songs)
+    await update.message.reply_text(song)
+    return ConversationHandler.END
+
+
+async def partylights(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    # song = random.choice(songs)
+    song = next(dance_songs)
+    await update.message.reply_animation("https://media.giphy.com/media/b60d0PNX0NPdS/giphy-downsized.gif")
+    return ConversationHandler.END
+
+async def bro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    await update.message.reply_voice(open('bruh.opus','rb'))
+    return ConversationHandler.END
+
+
+shortcuts = {
+    "eastereggs": """*List of the easter 🥚🥚🥚*
+    /bro
+    /hello
+    /bye
+    /alarm /wakeup
+    /durak
+    /party
+    /partylights
+    /dance
+    /alien
+    /51
+    /phrases
+    /curse
+    """,
+    "hello": "Terve",
+    "bye": "Heihei",
+    "alarm": "https://youtu\.be/xRiHXWEpYuI",
+    "wakeup": "https://youtu\.be/xRiHXWEpYuI",
+    "photos": "https://photos\.app\.goo\.gl/feMqHYoaJQUk3oZN9",
+    "durak": "https://en\.wikipedia\.org/wiki/Durak",
+    "alien": "https://youtu\.be/gJhlyBJHv9I",
+    "51": "https://youtu\.be/WxrQ3SqSt6Q",
+    "phrases": """*LIST OF FINNISH PHRASES:*
+    *Saisiko olutta/viinaa/ruokaa?*  \-  _Can i have some beer/booze/food?_
+    *Oispa kaljaa*  \-  _I wish I had some beer_
+    *Missä olen?*  \-  _Where am I?_
+    *Miksi olet alasti?*  \-  _Why are you naked?_
+    *Miksi olen alasti?*  \-  _Why am I naked?_
+    *Kuusi*  \-  _spruce/six_
+    *Kusi*  \-  _swear word meaning piss_
+    *puukko*  \-  _small traditional Finnish belt knife_
+    *puukkohippa*  \-  _playing tag with puukko_
+    *kalsarikännit*  \-  _drinking alone at home wearing only underwears with no intention of going out_
+    *kuusi palaa*  \-  _just google it_
+    """
+}
+async def shortcut(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    response = shortcuts[update.message.text[1:]]
+    await update.message.reply_markdown_v2(response)
+    return ConversationHandler.END
+
+
 def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
@@ -218,6 +333,12 @@ def main() -> None:
 
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("curse", curse))
+    application.add_handler(CommandHandler("party", party))
+    application.add_handler(CommandHandler("dance", dance))
+    application.add_handler(CommandHandler("bro", bro))
+    application.add_handler(CommandHandler("partylights", partylights))
+    application.add_handler(CommandHandler(shortcuts.keys(), shortcut))
     application.add_handler(storedata_handler)
     application.add_handler(plotter_handler)
 
