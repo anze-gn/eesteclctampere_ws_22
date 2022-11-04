@@ -300,7 +300,8 @@ shortcuts = {
     """
 }
 async def shortcut(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    response = shortcuts[update.message.text[1:]]
+    command = re.search('\/([^@]+)', update.message.text).group(1)
+    response = shortcuts[command]
     await update.message.reply_markdown_v2(response)
     return ConversationHandler.END
 
