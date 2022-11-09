@@ -263,12 +263,18 @@ async def partylights(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
     await update.message.reply_animation("https://media.giphy.com/media/b60d0PNX0NPdS/giphy-downsized.gif")
     return ConversationHandler.END
 
+
 async def bro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await update.message.reply_voice(open('bro.opus','rb'))
+    await update.message.reply_voice(open('bro.opus', 'rb'))
     return ConversationHandler.END
 
 async def bruh(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await update.message.reply_voice(open('bruh.opus','rb'))
+    await update.message.reply_voice(open('bruh.opus', 'rb'))
+    return ConversationHandler.END
+
+
+async def gayvodka(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    await update.message.reply_photo(open('gay_vodka.jpg', 'rb'))
     return ConversationHandler.END
 
 
@@ -287,6 +293,7 @@ shortcuts = {
     /51
     /phrases
     /curse
+    /gayvodka
     """,
     "hello": "Terve",
     "bye": "Heihei",
@@ -382,6 +389,7 @@ def main() -> None:
     application.add_handler(CommandHandler("bro", bro))
     application.add_handler(CommandHandler("bruh", bruh))
     application.add_handler(CommandHandler("partylights", partylights))
+    application.add_handler(CommandHandler("gayvodka", gayvodka))
     application.add_handler(CommandHandler(shortcuts.keys(), shortcut))
     application.add_handler(storedata_handler)
     application.add_handler(plotter_handler)
