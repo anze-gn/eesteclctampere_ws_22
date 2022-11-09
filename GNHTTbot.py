@@ -264,6 +264,10 @@ async def partylights(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
     return ConversationHandler.END
 
 async def bro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    await update.message.reply_voice(open('bro.opus','rb'))
+    return ConversationHandler.END
+
+async def bruh(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_voice(open('bruh.opus','rb'))
     return ConversationHandler.END
 
@@ -271,6 +275,7 @@ async def bro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 shortcuts = {
     "eastereggs": """*List of the easter 🥚🥚🥚*
     /bro
+    /bruh
     /hello
     /bye
     /alarm /wakeup
@@ -375,6 +380,7 @@ def main() -> None:
     application.add_handler(CommandHandler("party", party))
     application.add_handler(CommandHandler("dance", dance))
     application.add_handler(CommandHandler("bro", bro))
+    application.add_handler(CommandHandler("bruh", bruh))
     application.add_handler(CommandHandler("partylights", partylights))
     application.add_handler(CommandHandler(shortcuts.keys(), shortcut))
     application.add_handler(storedata_handler)
