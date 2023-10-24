@@ -278,6 +278,11 @@ async def gayvodka(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return ConversationHandler.END
 
 
+async def gayvodka_v2(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    await update.message.reply_photo(open('gay_vodka_v2.jpg', 'rb'))
+    return ConversationHandler.END
+
+
 shortcuts = {
     "eastereggs": """*List of the easter 🥚🥚🥚*
     /bro
@@ -294,6 +299,7 @@ shortcuts = {
     /phrases
     /curse
     /gayvodka
+    /gayvodka_v2
     """,
     "hello": "Terve",
     "bye": "Heihei",
@@ -390,6 +396,7 @@ def main() -> None:
     application.add_handler(CommandHandler("bruh", bruh))
     application.add_handler(CommandHandler("partylights", partylights))
     application.add_handler(CommandHandler("gayvodka", gayvodka))
+    application.add_handler(CommandHandler("gayvodka_v2", gayvodka_v2))
     application.add_handler(CommandHandler(shortcuts.keys(), shortcut))
     application.add_handler(storedata_handler)
     application.add_handler(plotter_handler)
