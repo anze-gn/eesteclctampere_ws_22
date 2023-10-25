@@ -1,3 +1,10 @@
+# How to run:
+1. Create env.cfg file with your token (see env-example.cfg)
+2. Use Dockerfile to build and run a Docker container
+
+---
+---
+
 # eesteclctampere_ws_22
 Base project for Great Northern Health Tracking Trek. EESTEC LC Tampere workshop November 2022
 
