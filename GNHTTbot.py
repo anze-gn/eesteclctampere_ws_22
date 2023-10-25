@@ -74,10 +74,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "/cancel cancels current action\n"
         "\n"
         "*Terms & Conditions:*\n"
-        "||_By using this bot you agree to health data collection and processing\.\n"
-        "You also agree to donate a kidney and your firstborn child to EESTEC, when/if the need arises\. "
-        "In such case, you shall be notified by a carrier pigeon and you have to respond in 5 business days\. "
-        "By failing to do so, you allow EESTEC to use any means necessary to collect your donation\.\n_||",
+        "||_By using this bot you agree to health data collection and processing\\.\n"
+        "You also agree to donate a kidney and your firstborn child to EESTEC, when/if the need arises\\. "
+        "In such case, you shall be notified by a carrier pigeon and you have to respond in 5 business days\\. "
+        "By failing to do so, you allow EESTEC to use any means necessary to collect your donation\\.\n_||",
         disable_web_page_preview=True
     )
 
@@ -122,7 +122,7 @@ async def store_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     url = update.message.text
 
     try:
-        id = re.search('i=(\w+)', url).group(1)
+        id = re.search(r'i=(\w+)', url).group(1)
     except AttributeError:
         logger.info(
             "URL %s from user %s not recognized", url, user.first_name
@@ -299,32 +299,32 @@ shortcuts = {
     /phrases
     /curse
     /gayvodka
-    /gayvodka_v2
+    /gayvodka\\_v2
     """,
     "hello": "Terve",
     "bye": "Heihei",
-    "alarm": "https://youtu\.be/xRiHXWEpYuI",
-    "wakeup": "https://youtu\.be/xRiHXWEpYuI",
-    "photos": "https://photos\.app\.goo\.gl/feMqHYoaJQUk3oZN9",
-    "durak": "https://en\.wikipedia\.org/wiki/Durak",
-    "alien": "https://youtu\.be/gJhlyBJHv9I",
-    "51": "https://youtu\.be/WxrQ3SqSt6Q",
+    "alarm": "https://youtu\\.be/xRiHXWEpYuI",
+    "wakeup": "https://youtu\\.be/xRiHXWEpYuI",
+    "photos": "https://photos\\.app\\.goo\\.gl/feMqHYoaJQUk3oZN9",
+    "durak": "https://en\\.wikipedia\\.org/wiki/Durak",
+    "alien": "https://youtu\\.be/gJhlyBJHv9I",
+    "51": "https://youtu\\.be/WxrQ3SqSt6Q",
     "phrases": """*LIST OF FINNISH PHRASES:*
-    *Saisiko olutta/viinaa/ruokaa?*  \-  _Can i have some beer/booze/food?_
-    *Oispa kaljaa*  \-  _I wish I had some beer_
-    *Missä olen?*  \-  _Where am I?_
-    *Miksi olet alasti?*  \-  _Why are you naked?_
-    *Miksi olen alasti?*  \-  _Why am I naked?_
-    *Kuusi*  \-  _spruce/six_
-    *Kusi*  \-  _swear word meaning piss_
-    *puukko*  \-  _small traditional Finnish belt knife_
-    *puukkohippa*  \-  _playing tag with puukko_
-    *kalsarikännit*  \-  _drinking alone at home wearing only underwears with no intention of going out_
-    *kuusi palaa*  \-  _just google it_
+    *Saisiko olutta/viinaa/ruokaa?*  \\-  _Can i have some beer/booze/food?_
+    *Oispa kaljaa*  \\-  _I wish I had some beer_
+    *Missä olen?*  \\-  _Where am I?_
+    *Miksi olet alasti?*  \\-  _Why are you naked?_
+    *Miksi olen alasti?*  \\-  _Why am I naked?_
+    *Kuusi*  \\-  _spruce/six_
+    *Kusi*  \\-  _swear word meaning piss_
+    *puukko*  \\-  _small traditional Finnish belt knife_
+    *puukkohippa*  \\-  _playing tag with puukko_
+    *kalsarikännit*  \\-  _drinking alone at home wearing only underwears with no intention of going out_
+    *kuusi palaa*  \\-  _just google it_
     """
 }
 async def shortcut(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    command = re.search('\/([^@]+)', update.message.text).group(1)
+    command = re.search(r'\/([^@]+)', update.message.text).group(1)
     response = shortcuts[command]
     await update.message.reply_markdown_v2(response)
     return ConversationHandler.END
